@@ -1,4 +1,4 @@
-import { ADD_FAV } from "../actions/favoritesAction";
+import { ADD_FAV, REMOVE_FAV } from "../actions/favoritesAction";
 
 const initialState = {
   favMovies: [
@@ -21,6 +21,11 @@ function favoritesReducer(state = initialState, action) {
   switch (action.type) {
     case ADD_FAV:
       return { ...state, favMovies: [...state.favMovies, action.payload] };
+    case REMOVE_FAV:
+      const remainingFavMovies = state.favMovies.filter(
+        (movie) => movie.id !== action.payload
+      );
+      return { ...state, favMovies: remainingFavMovies };
     default:
       return state;
   }

@@ -1,5 +1,5 @@
 import { movies } from "./../../movies";
-import { NEXT, PREV } from "../actions/moviesAction";
+import { NEXT, PREV, REMOVE_MOV } from "../actions/moviesAction";
 const initialData = {
   movies: movies,
   order: 0,
@@ -20,6 +20,11 @@ const moviesReducer = (state = initialData, action) => {
         return { ...state, disabledButton: "PREV" };
       }
       return { ...state, order: state.order - 1, disabledButton: null };
+    case REMOVE_MOV:
+      const remainingMovies = state.movies.filter(
+        (movie) => movie.id !== action.payload.id
+      );
+      return { ...state, movies: remainingMovies };
     default:
       return state;
   }

@@ -2,14 +2,26 @@ import { useState } from "react";
 import { Switch, Route, NavLink } from "react-router-dom";
 import Movie from "./components/Movie";
 import FavMovie from "./components/FavMovie";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { NEXT, PREV } from "./store/actions/moviesAction";
 
 function App() {
-  const [sira, setSira] = useState(0);
+  //  const [sira, setSira] = useState(0);
+
   const favMovies = useSelector((state) => state.favoritesReducer.favMovies);
 
+  const disabledButton = useSelector(
+    (state) => state.moviesReducer.disabledButton
+  );
+  const dispatch = useDispatch();
+
   function sonrakiFilm() {
-    setSira(sira + 1);
+    //setSira(sira + 1);
+    dispatch({ type: NEXT });
+  }
+  function öncekiFilm() {
+    // setSira(sira - 1);
+    dispatch({ type: PREV });
   }
 
   return (
@@ -33,12 +45,20 @@ function App() {
       </nav>
       <Switch>
         <Route exact path="/">
-          <Movie sira={sira} />
+          <Movie />
 
           <div className="flex gap-3 justify-end py-3">
             <button
+              disabled={disabledButton === "PREV"}
+              onClick={öncekiFilm}
+              className="select-none disabled:opacity-25 px-4 py-2 border border-blue-700 text-blue-700 hover:border-blue-500 hover:text-blue-500"
+            >
+              Önceki
+            </button>
+            <button
+              disabled={disabledButton === "NEXT"}
               onClick={sonrakiFilm}
-              className="select-none px-4 py-2 border border-blue-700 text-blue-700 hover:border-blue-500 hover:text-blue-500"
+              className="select-none disabled:opacity-25 px-4 py-2 border border-blue-700 text-blue-700 hover:border-blue-500 hover:text-blue-500"
             >
               Sıradaki
             </button>
